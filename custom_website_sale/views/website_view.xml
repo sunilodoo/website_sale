@@ -1,0 +1,61 @@
+<odoo>
+
+    <!-- <script type="text/javascript" src="/custom_product/static/src/website_sale.js"/> -->
+
+    
+  <template id="product_page_discount" inherit_id="website_sale.product_price">
+        <!-- Locate the price block and modify it -->
+        <xpath expr="//h4[@class='oe_price_h4 css_editable_mode_hidden']" position="replace">
+            <div class="product_price mt16">
+                <h4>
+                    <!-- Display the original price and discount price if applicable -->
+                    <t t-if="product.discount_percentage">
+                        <!-- Show original price with strikethrough -->
+                        <span class="oe_currency_value">
+                            <del t-esc="product.list_price"/>
+                        </span>
+
+                        <!-- Show discounted price -->
+                        <span class="oe_currency_value oe_discounted_price">
+                            <t t-esc="product.discounted_price"/>
+                        </span>
+
+                        <!-- Show discount percentage -->
+                        <span class="oe_discount_percentage">
+                            (<t t-esc="product.discount_percentage"/>% off)
+                        </span>
+                    </t>
+                    <!-- If no discount, just show the original price -->
+                    <t t-else="">
+                        <span class="oe_currency_value">
+                            <t t-esc="product.list_price"/>
+                        </span>
+                    </t>
+                </h4>
+            </div>
+        </xpath>
+    </template>
+
+
+     <template id="cart_page_discount" inherit_id="website_sale.cart_lines">
+        
+       <xpath expr="//td[@class='text-center td-price']" position="replace">
+            <td class="text-center td-price">
+                <t t-if="line.product_id.discount_percentage">
+              
+                    <del><t t-esc="line.product_id.list_price"/></del>
+                  
+                    <t t-esc="line.product_id.discounted_price"/>
+                </t>
+                <t t-else="">
+                
+                    <t t-esc="line.product_id.list_price"/>
+                </t>
+            </td>
+        </xpath>
+    </template>
+
+
+    
+
+</odoo>
